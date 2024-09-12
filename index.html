@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer with Controls</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #4CAF50; /* พื้นหลังสีเขียว */
+            color: rgb(255, 255, 255); /* สีตัวอักษรขาวเพื่อให้เห็นชัดเจน */
+            text-align: center;
+            margin-top: 50px;
+        }
+        #time-display {
+            font-size: 72px; /* ขนาดตัวเลขใหญ่ขึ้น */
+            font-weight: bold; /* ตัวหนา */
+            font-family: 'Courier New', monospace; /* เปลี่ยนฟอนต์เป็น monospace เพื่อดูเหมือนตัวเลขดิจิทัล */
+            padding: 20px; /* เพิ่มระยะห่างภายใน */
+            border-radius: 10px; /* มุมโค้งมน */
+            display: inline-block; /* จัดให้อยู่ตรงกลาง */
+            margin-bottom: 30px;
+        }
+        .button {
+            padding: 15px 25px; /* ขยายขนาดปุ่ม */
+            font-size: 18px; /* ขยายขนาดตัวหนังสือของปุ่ม */
+            font-weight: bold;
+            color: #4CAF50; /* สีเขียวเหมือนพื้นหลัง */
+            background-color: white; /* พื้นหลังสีขาวสำหรับปุ่ม */
+            border: none;
+            border-radius: 5px; /* มุมโค้งมน */
+            margin: 5px;
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อวางบนปุ่ม */
+            transition: background-color 0.3s ease; /* เพิ่มเอฟเฟกต์เมื่อ hover */
+        }
+        .button:hover {
+            background-color: #ddd; /* เปลี่ยนสีปุ่มเมื่อ hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Countdown Timer</h1>
+    <div id="time-display">00:00:00</div>
+    <br>
+    <button class="button" onclick="adjustTime(30)">+30 Minutes</button>
+    <button class="button" onclick="adjustTime(-30)">-30 Minutes</button>
+    <button class="button" onclick="startTimer()">Start</button>
+    <button class="button" onclick="resetTimer()">Reset</button>
+
+    <script>
+        let countdownTime = 0; // Countdown time in seconds
+        let timerInterval;
+
+        function formatTime(seconds) {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function adjustTime(minutes) {
+            countdownTime += minutes * 60; // Convert minutes to seconds
+            if (countdownTime < 0) countdownTime = 0; // Ensure time is not negative
+            document.getElementById('time-display').textContent = formatTime(countdownTime);
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (countdownTime > 0) {
+                    countdownTime--;
+                    document.getElementById('time-display').textContent = formatTime(countdownTime);
+                } else {
+                    clearInterval(timerInterval);
+                   
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            countdownTime = 0;
+            document.getElementById('time-display').textContent = formatTime(countdownTime);
+        }
+    </script>
+</body>
+</html>
